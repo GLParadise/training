@@ -8,5 +8,9 @@ if __name__ == '__main__':
     page = requests.get(url)
 
     soup = BeautifulSoup(page.content, 'html.parser')
-    f.write(soup.prettify())
+    #f.write(soup.prettify())
+    
+    results = soup.find_all('span', class_= "rQMQod Xb5VRe")
+    for search_results in results:
+        f.write(search_results.text.strip()+"\n")
     print('done')
