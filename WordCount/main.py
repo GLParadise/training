@@ -1,5 +1,5 @@
 import csv
-#import readwrite
+
 def listOfWords(fileName):
     #the following list is all punctuation, spaces and line breaks that would not be part of a word or would mark the end of a word
     wordEnd = ['.', ' ', ',', ':', ';', '"', '!', '?', ')', '\n', '(', '/', '|', '~', '<', '>']
@@ -46,15 +46,47 @@ def countWords(wordList):
             wordCount[1].append(wordList.count(word))
     return wordCount
 
+def countSorter(wordCount):
+    #runs an insertion sort on the wordCount list would consider changing sort type if this was intended for documents with
+    #more different words
+    for count in range(1, len(wordCount[1])): 
+        #keys to hold the values of the two lists in the nest
+        keyCount = wordCount[1][count]
+        keyWord = wordCount[0][count] 
+        scanner = count-1
+
+        while scanner >= 0 and keyCount > wordCount[1][scanner] :
+                #moves the scanned index up if the number at the current index is greater than the number at the scanned index
+                wordCount[1][scanner + 1] = wordCount[1][scanner]
+                wordCount[0][scanner + 1] = wordCount[0][scanner]
+                scanner -= 1
+        #puts current value at the lowest index that it should exist in
+        wordCount[1][scanner + 1] = keyCount
+        wordCount[0][scanner+1] = keyWord
+    return wordCount
+
+def writeToDoc(sortedList, fileName):
+    #a shortcut function to write the sorted list in the desired format
+    #keeps main readable
+    with open(fileName+'.csv', 'w', newline='') as csvfile:
+        docWriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        for index in range(len(sortedList[0])):
+            docWriter.writerow([sortedList[0][index]]+[sortedList[1][index]])
+
 if __name__ == "__main__":
     #ask for the name of the text file the user wants to check the word count of
-    fileName = input("What is the name of the .txt file you would like me to scan?")
+    fileName = input("What is the name of the .txt file you would like me to scan? Enter exit to quit.")
+    if fileName.lower() == 'exit':
+        quit()
     
     #call the defined function that turns a .txt file into a list of words in it
     wordList = listOfWords(fileName)
     #call the defined function that counts the number of each word
     wordCount = countWords(wordList)
-    indexLocation = 0
-    for word in wordCount[0]:
-        print(word+",",wordCount[1][indexLocation])
-        indexLocation+=1
+    #call the defined function that sorts the word count
+    sortedCount = countSorter(wordCount)
+    #ask what the user wants to save the .csv file as
+    saveFile = input("What would you like to name the sorted .csv file? Enter exit to quit.")
+    if saveFile.lower() == 'exit':
+        quit()
+    writeToDoc(sortedCount, saveFile)
