@@ -1,7 +1,6 @@
 import random
 
-if __name__=='__main__':
-	def determineWinner(compChoice, playChoice, wins):
+def determineWinner(compChoice, playChoice, wins):
 		if playChoice == compChoice:
 			print("It's a draw. Want to play again?")
 			return wins
@@ -14,6 +13,7 @@ if __name__=='__main__':
 			wins[1]+=1
 			return wins
 
+if __name__=='__main__':
 	rps = ["rock", "paper", "scissors"]
 	wins = [0,0]
 	while True:
@@ -22,6 +22,8 @@ if __name__=='__main__':
 		computerChoiceInt = random.randint(1,3)
 		computerChoice = rps[computerChoiceInt-1]
 		print(playerChoice)
+		if playerChoice == "exit":
+			break
 		if playerChoice != rps[0] and playerChoice != rps[1] and playerChoice != rps[2]:
 			print("Please choose from rock, paper or scissors!")
 			continue
