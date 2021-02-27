@@ -14,7 +14,7 @@ Remember, no magic numbers
 instead:
 var EXAMPLE_STATIC int = 0
 
-func readtolist(userPkmn string){
+func readto(userPkmn string){
 
 }
 func pickwin(userPkmn string, botPkmn int){
@@ -74,5 +74,4 @@ func main(){
 	//pickwin(userPkmn, botPkmn)
 	fmt.Println("The bot picked "+pkmnList[botPkmn])
 	
-	//I plan to turn this switch into a function called pickwin
 }
